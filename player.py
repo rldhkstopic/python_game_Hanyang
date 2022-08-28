@@ -1,13 +1,16 @@
 import pygame
+import os
 import settings
 
 BLACK = (0, 0, 0)
 
+CHARACTER = ['메인캐', '신', '구미호', '광대', '황제']
 class USER():
     def __init__(self, screen):
         self.screen = screen
         self.init_tick = pygame.time.get_ticks()
         self.image = pygame.image.load('./imgs/main_chrt.png').convert_alpha()
+        self.userType(CHARACTER[3], 20)
 
         self.frame = 0
         self.status = 'Left'
@@ -15,7 +18,7 @@ class USER():
 
         self.attack_time = 0
         self.attack_status = 0
-        self.attack_cooldown = 400
+        self.attack_cooldown = 700
 
         self.step_horizon = 0
         self.step_vertical = 0
@@ -27,6 +30,14 @@ class USER():
         self.animation_list = []
         self.animation_step = [6,6,4,4,8,8]
         self.animation_frame = 100
+
+
+    def userType(self, chr_type = '메인캐', num = 1):
+        dir_weapon_1 = './imgs/weapons/'
+        dir_weapon_2 = '번무기.png'
+        dir_weapon = os.path.join(dir_weapon_1, chr_type+'_'+str(num)+dir_weapon_2)
+
+        self.image = pygame.image.load(dir_weapon).convert_alpha()
 
     def get_image(self, hframe, vframe, width, height, scale, colour):
         image = pygame.Surface((width, height)).convert_alpha()
@@ -56,7 +67,6 @@ class USER():
             if not 'idle' in self.status and not 'attack' in self.status:
                 self.status = self.status + '_idle'
 
-
         if self.attack_status:
             self.direction.x = 0
             self.direction.y = 0
@@ -72,10 +82,10 @@ class USER():
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
         if current_time - self.init_tick >= self.animation_frame:
-            if self.frame >= len(self.animation[self.status]):
-                self.frame = 0
             self.frame += 1
             self.init_tick = current_time
+        if self.frame >= len(self.animation[self.status]):
+            self.frame = 0
 
         if self.attack_status:
             if current_time - self.attack_time >= self.attack_cooldown:
