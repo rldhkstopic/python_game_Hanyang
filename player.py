@@ -15,7 +15,7 @@ class USER():
 
         self.attack_time = 0
         self.attack_status = 0
-        self.attack_cooldown = 100
+        self.attack_cooldown = 400
 
         self.step_horizon = 0
         self.step_vertical = 0
@@ -50,12 +50,13 @@ class USER():
             self.step_vertical += 1
             self.animation[self.animation_list[count]] = temp_img_list
             count += 1
-        print(self.animation)
 
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
             if not 'idle' in self.status and not 'attack' in self.status:
                 self.status = self.status + '_idle'
+
+
         if self.attack_status:
             self.direction.x = 0
             self.direction.y = 0
@@ -71,14 +72,15 @@ class USER():
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
         if current_time - self.init_tick >= self.animation_frame:
-            self.frame += 1
-            self.init_tick = current_time
             if self.frame >= len(self.animation[self.status]):
                 self.frame = 0
+            self.frame += 1
+            self.init_tick = current_time
 
         if self.attack_status:
             if current_time - self.attack_time >= self.attack_cooldown:
                 self.attack_status = False
+
 
     def keydown(self):
         if not self.attack_status:
@@ -111,7 +113,7 @@ class USER():
 
     def update(self):
         self.keydown()
-        self.cooldowns()
         self.get_status()
+        self.cooldowns()
         self.screen.blit(self.animation[self.status][self.frame], (0, 0))
-        print(self.status)
+        print(self.frame)
