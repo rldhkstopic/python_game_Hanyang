@@ -1,0 +1,6 @@
+
+SCREEN_WIDTH = 500
+SCREEN_HEIGHT = 500
+
+BackGround = (50, 50, 50)
+BLACK = (0, 0, 0)
