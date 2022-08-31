@@ -10,7 +10,7 @@ class USER():
         self.screen = screen
         self.init_tick = pygame.time.get_ticks()
         self.image = pygame.image.load('./imgs/main_chrt.png').convert_alpha()
-        self.userType(CHARACTER[3], 20)
+        self.userType(CHARACTER[0], 1)
 
         self.frame = 0
         self.status = 'Left'
